@@ -4,6 +4,7 @@ import { useTasks } from '../src/hooks/useTasks';
 import { TaskItem } from '../src/components/TaskItem';
 import { EmptyState } from '../src/components/EmptyState';
 import { FilterBar } from '../src/components/FilterBar';
+import { useAuthContext } from '../src/contexts/AuthContext';
 
 export default function Home() {
   const {
@@ -19,6 +20,7 @@ export default function Home() {
   } = useTasks();
 
   const router = useRouter();
+  const { signOut } = useAuthContext();
 
   if (loading) {
     return (
@@ -32,14 +34,28 @@ export default function Home() {
     <>
       {/* Configuração do header com o botão de perfil para a Etapa 19 */}
       <Stack.Screen
-        options={{
-          headerRight: () => (
-            <TouchableOpacity onPress={() => router.push('/profile')}>
-              <Text className="text-3xl">👤</Text>
-            </TouchableOpacity>
-          ),
-        }}
-      />
+  options={{
+    headerRight: () => (
+      <View className="flex-row gap-4">
+        <TouchableOpacity
+          onPress={() => router.push('/profile')}
+          accessibilityLabel="Abrir perfil"
+          accessibilityRole="button"
+        >
+          <Text className="text-3xl">👤</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={signOut}
+          accessibilityLabel="Sair"
+          accessibilityRole="button"
+        >
+          <Text className="text-3xl">🚪</Text>
+        </TouchableOpacity>
+      </View>
+    ),
+  }}
+/>
 
       <View className="flex-1 bg-gray-50 p-4">
         {/* Barra de Filtros (Todas / Pendentes / Concluídas) */}
