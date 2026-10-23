@@ -11,6 +11,7 @@ export default function RootLayout() {
     >
       <Stack.Screen name="index" options={{ title: '📋 Minhas Tarefas' }} />
       <Stack.Screen name="form" options={{ title: 'Nova Tarefa' }} />
+      <Stack.Screen name="profile" options={{title: '👤 Meu Perfil', }}/>
     </Stack>
   );
 }

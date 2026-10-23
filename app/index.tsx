@@ -1,5 +1,5 @@
-import {View,Text,TouchableOpacity,FlatList,ActivityIndicator,} from 'react-native';
-import { useRouter } from 'expo-router';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { useRouter, Stack } from 'expo-router';
 import { useTasks } from '../src/hooks/useTasks';
 import { TaskItem } from '../src/components/TaskItem';
 import { EmptyState } from '../src/components/EmptyState';
@@ -29,37 +29,50 @@ export default function Home() {
   }
 
   return (
-    <View className="flex-1 bg-gray-50 p-4">
-      {/* Barra de Filtros (Todas / Pendentes / Concluídas) */}
-      <FilterBar
-        activeFilter={filter}
-        onFilterChange={setFilter}
-        allCount={allTasksCount}
-        pendingCount={pendingCount}
-        completedCount={completedCount}
+    <>
+      {/* Configuração do header com o botão de perfil para a Etapa 19 */}
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <TouchableOpacity onPress={() => router.push('/profile')}>
+              <Text className="text-3xl">👤</Text>
+            </TouchableOpacity>
+          ),
+        }}
       />
 
-      {/* Lista de Tarefas */}
-      <FlatList
-        data={tasks}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <TaskItem
-            task={item}
-            onToggle={(id, currentStatus) => toggleTask(id, currentStatus)}
-            onDelete={removeTask}
-          />
-        )}
-        ListEmptyComponent={<EmptyState filter={filter} />}
-      />
+      <View className="flex-1 bg-gray-50 p-4">
+        {/* Barra de Filtros (Todas / Pendentes / Concluídas) */}
+        <FilterBar
+          activeFilter={filter}
+          onFilterChange={setFilter}
+          allCount={allTasksCount}
+          pendingCount={pendingCount}
+          completedCount={completedCount}
+        />
 
-      {/* Botão Flutuante (FAB) para abrir a tela app/form.tsx */}
-      <TouchableOpacity
-        className="absolute bottom-16 right-6 w-16 h-16 bg-indigo-600 rounded-full items-center justify-center shadow-lg"
-        onPress={() => router.push('/form')}
-      >
-        <Text className="text-white text-3xl">+</Text>
-      </TouchableOpacity>
-    </View>
+        {/* Lista de Tarefas */}
+        <FlatList
+          data={tasks}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => (
+            <TaskItem
+              task={item}
+              onToggle={(id, currentStatus) => toggleTask(id, currentStatus)}
+              onDelete={removeTask}
+            />
+          )}
+          ListEmptyComponent={<EmptyState filter={filter} />}
+        />
+
+        {/* Botão Flutuante (FAB) para abrir a tela app/form.tsx */}
+        <TouchableOpacity
+          className="absolute bottom-16 right-6 w-16 h-16 bg-indigo-600 rounded-full items-center justify-center shadow-lg"
+          onPress={() => router.push('/form')}
+        >
+          <Text className="text-white text-3xl">+</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 }

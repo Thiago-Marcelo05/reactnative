@@ -22,5 +22,14 @@ async function runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
       completed INTEGER DEFAULT 0,
       createdAt TEXT NOT NULL
     );
+
+    -- Tabela de perfil do usuário (registro único com id fixo = 1)
+    CREATE TABLE IF NOT EXISTS profile (
+      id       INTEGER PRIMARY KEY,
+      name     TEXT    NOT NULL DEFAULT '',
+      email    TEXT    NOT NULL DEFAULT '',
+      photoUri TEXT
+    );
+    
   `);
 }
